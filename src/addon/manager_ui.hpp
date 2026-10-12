@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include "addon/validation.hpp"
+
 #include <string>
 #include <vector>
 
@@ -25,7 +27,7 @@
  * @return @a true when one or more add-ons have been successfully installed or
  *         removed, thus requiring a local WML cache refresh. @a false otherwise.
  */
-bool manage_addons();
+bool manage_addons(const ADDON_TYPE type);
 
 /**
  * Conducts an ad-hoc add-ons server connection to download an add-on with a particular id and all

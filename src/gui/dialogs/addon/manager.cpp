@@ -225,11 +225,12 @@ const std::vector<addon_tag> tag_filter_types_{
 };
 };
 
-addon_manager::addon_manager(addons_client& client)
+addon_manager::addon_manager(addons_client& client, const ADDON_TYPE addon_type)
 	: modal_dialog(window_id())
 	, orders_()
 	, cfg_()
 	, client_(client)
+	, addon_type_(addon_type)
 	, addons_()
 	, tracking_info_()
 	, need_wml_cache_refresh_(false)
@@ -408,6 +409,14 @@ void addon_manager::pre_show()
 	}
 
 	type_filter.set_values(type_filter_entries);
+	if (addon_type_ != ADDON_UNKNOWN) {
+		for (int i = 0; i < type_filter_entries.size(); ++i) {
+			if (type_filter_types_[i].first == addon_type_) {
+				type_filter.select_option(i, true);
+				break;
+			}
+		}
+	}
 
 	connect_signal_notify_modified(type_filter,
 		std::bind(&addon_manager::apply_filters, this));
@@ -547,6 +556,9 @@ void addon_manager::pre_show()
 			std::bind(&addon_manager::on_selected_version_change, this));
 	}
 
+	if (addon_type_ != ADDON_UNKNOWN) {
+		apply_filters();
+	}
 	on_addon_select();
 
 	set_enter_disabled(true);

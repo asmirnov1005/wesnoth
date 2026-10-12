@@ -34,7 +34,7 @@ namespace dialogs
 class addon_manager : public modal_dialog
 {
 public:
-	explicit addon_manager(addons_client& client);
+	explicit addon_manager(addons_client& client, const ADDON_TYPE addon_type);
 
 	bool get_need_wml_cache_refresh() const
 	{
@@ -78,6 +78,8 @@ private:
 	config cfg_;
 
 	addons_client& client_;
+
+	ADDON_TYPE addon_type_;
 
 	addons_list addons_;
 
